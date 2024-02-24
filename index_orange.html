@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #ff8c00; /* Orange color */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #fff; /* White color */
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #ffa500; /* Orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+        }
+        button[type="submit"]:hover {
+            background-color: #ff7f00; /* Darker shade of orange */
+        }
+        #recommendedUsers {
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        li:hover {
+            background-color: #f0f0f0;
+        }
+        .email-link {
+            color: #007bff; /* Blue color */
+            text-decoration: none;
+        }
+        .email-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Find Recommended Users</h1>
+        <form id="skillForm">
+            <input type="text" id="skill" name="skill" placeholder="Enter a skill" required>
+            <br>
+            <button type="submit">Recommend Users</button>
+        </form>
+        <div id="recommendedUsers"></div>
+    </div>
+
+    <script>
+        document.getElementById('skillForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var skill = document.getElementById('skill').value;
+
+            fetch('/recommend_users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    selected_skill: skill
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var recommendedUsersDiv = document.getElementById('recommendedUsers');
+                recommendedUsersDiv.innerHTML = '';
+
+                if (data.message) {
+                    recommendedUsersDiv.innerHTML = '<p>' + data.message + '</p>';
+                } else {
+                    var usersList = '<ul>';
+                    data.forEach(function(user) {
+                        usersList += '<li>' + user.first_name + ' - ' + uaser.email + '</li>';
+                    });
+                    usersList += '</ul>';
+                    recommendedUsersDiv.innerHTML = usersList;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
