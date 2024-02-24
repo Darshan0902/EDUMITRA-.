@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Users</title>
+</head>
+<body>
+    <h1>Recommend Users</h1>
+    <form id="skillForm">
+        <label for="skill">Enter a skill:</label>
+        <input type="text" id="skill" name="skill" required>
+        <button type="submit">Recommend Users</button>
+    </form>
+    <div id="recommendedUsers"></div>
+
+    <script>
+        document.getElementById('skillForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var skill = document.getElementById('skill').value;
+
+            fetch('/recommend_users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    selected_skill: skill
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var recommendedUsersDiv = document.getElementById('recommendedUsers');
+                recommendedUsersDiv.innerHTML = '';
+
+                if (data.message) {
+                    recommendedUsersDiv.innerHTML = '<p>' + data.message + '</p>';
+                } else {
+                    var usersList = '<ul>';
+                    data.forEach(function(user) {
+                        usersList += '<li>' + user.first_name + ' - ' + user.email + '</li>';
+                    });
+                    usersList += '</ul>';
+                    recommendedUsersDiv.innerHTML = usersList;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
