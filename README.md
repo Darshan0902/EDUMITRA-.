@@ -40,3 +40,11 @@
 - Label Encoder error solved.
 - PowerBI dashboard Created.
 ```
+
+## 24-02-2024 : 
+
+```
+- Flask integrated in the code.
+- Orange Flask integrated in the code with working.
+
+```
