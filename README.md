@@ -49,6 +49,10 @@
 
 ```
 
+## 25-02-2024 : 
 
-
+```
+- New dataset created (MOCK_data.csv)
+- Flask model has been integrated changes to now display all the columns (College,City,Phone,Email).
+```
 
